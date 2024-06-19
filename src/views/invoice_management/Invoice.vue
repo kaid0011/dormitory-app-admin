@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <q-btn @click="handlePrint" color="primary">Print</q-btn>
+      <q-btn @click="handlePrint" color="primary" class="q-mb-lg">Print</q-btn>
     </div>
     <div>
       <q-card class="print-container row" v-if="pdfContent">
@@ -90,6 +90,7 @@ const generatePdfContent = (invoiceDetails, coupon, transactions, itemList) => {
       padding-bottom: 8px;
       text-align: center;
       border-bottom: 1px solid #ccc;
+      color: black;
     }
 
     .html_cardNo {

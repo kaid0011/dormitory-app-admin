@@ -4,7 +4,9 @@
 
     <!-- Account filter -->
     <div>
-      <label for="accountFilter">Filter by Account No:</label>
+      <label for="accountFilter" class="text-white"
+        >Filter by Account No:</label
+      >
       <select
         id="accountFilter"
         v-model="selectedAccountNo"
@@ -19,21 +21,21 @@
           {{ client.account_no }}
         </option>
       </select>
-    </div>
 
-    <!-- Add Coupon button -->
-    <q-btn
-      v-if="selectedAccountNo"
-      label="Add Coupon"
-      color="primary"
-      @click="openAddCouponDialog"
-      class="q-mt-md"
-    />
+      <!-- Add Coupon button -->
+      <q-btn
+        v-if="selectedAccountNo"
+        label="Add Coupon"
+        color="primary"
+        @click="openAddCouponDialog"
+        class="q-ml-lg"
+      />
+    </div>
 
     <!-- Coupons table -->
     <div class="q-pa-md">
       <q-table
-        title="Coupons"
+        class="table"
         :rows="filteredCoupons"
         :columns="columns"
         row-key="coupon_no"
@@ -51,53 +53,53 @@
     </div>
 
     <!-- Update Coupon Dialog -->
-    <q-dialog v-model="showUpdateCouponDialog">
-      <q-card>
-        <q-card-section>
+    <q-dialog v-model="showUpdateCouponDialog" persistent transition-show="slide-down" transition-hide="slide-up">
+      <q-card style="width: 500px;">
+        <q-card-section class="bg-primary text-white">
           <div class="text-h6">Update Coupon</div>
         </q-card-section>
 
-        <q-card-section>
+        <q-card-section class="q-gutter-md">
           <q-input
             v-model="selectedCoupon.coupon_no"
             label="Coupon No"
-            :disable="true"
+            :disable="true" outlined required
           />
           <q-input
             v-model="selectedCoupon.balance"
             label="Balance"
-            type="number"
+            type="number" outlined required
           />
           <!-- Other fields for updating the coupon -->
         </q-card-section>
 
         <q-card-actions align="right">
           <q-btn
-            flat
             label="Cancel"
-            color="primary"
+            color="secondary"
             @click="showUpdateCouponDialog = false"
           />
-          <q-btn flat label="Save" color="primary" @click="saveUpdatedCoupon" />
+          <q-btn label="Save" color="primary" @click="saveUpdatedCoupon" />
         </q-card-actions>
       </q-card>
     </q-dialog>
 
     <!-- Add Coupon Dialog -->
-    <q-dialog v-model="showAddCouponDialog">
-      <q-card>
-        <q-card-section>
+    <q-dialog v-model="showAddCouponDialog" persistent transition-show="slide-down" transition-hide="slide-up">
+      <q-card style="width: 500px;">
+        <q-card-section class="bg-primary text-white">
           <div class="text-h6">Add Coupon</div>
         </q-card-section>
 
-        <q-card-section>
+        <q-card-section  class="q-gutter-md">
           <!-- Display highest coupon_no for each client_id -->
-          <div v-if="selectedAccountNo && Object.keys(highestCoupons).length > 0">
-              <div v-for="(couponNo, clientId) in highestCoupons" :key="clientId">
-                Account No: {{ newCoupon.account_no }}
-                Account Name: {{ newCoupon.name }}
-                Highest Coupon No: {{ couponNo }}
-              </div>
+          <div
+            v-if="selectedAccountNo && Object.keys(highestCoupons).length > 0"
+          >
+            <div v-for="(couponNo, clientId) in highestCoupons" :key="clientId">
+              Account No: {{ newCoupon.account_no }} Account Name:
+              {{ newCoupon.name }} Highest Coupon No: {{ couponNo }}
+            </div>
           </div>
           <div v-else>
             <p>No coupons found for the selected account.</p>
@@ -107,23 +109,23 @@
             v-model="newCoupon.fromSeries"
             label="From Series"
             type="number"
+            outlined required
           />
           <q-input
             v-model="newCoupon.toSeries"
             label="To Series"
             type="number"
+            outlined required
           />
-          <q-input v-model="newCoupon.balance" label="Balance" type="number" />
+          <q-input v-model="newCoupon.balance" label="Balance" type="number" outlined required/>
         </q-card-section>
 
         <q-card-actions align="right">
           <q-btn
-            flat
-            label="Cancel"
-            color="primary"
+            label="Cancel" color="secondary" 
             @click="showAddCouponDialog = false"
           />
-          <q-btn flat label="Add" color="primary" @click="addCoupon" />
+          <q-btn label="Add" color="primary" @click="addCoupon" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -206,7 +208,7 @@ const filteredCoupons = computed(() => {
 const highestCoupons = computed(() => {
   const highestMap = {};
 
-  filteredCoupons.value.forEach(coupon => {
+  filteredCoupons.value.forEach((coupon) => {
     const clientId = coupon.client_id;
     const couponNo = coupon.coupon_no;
 

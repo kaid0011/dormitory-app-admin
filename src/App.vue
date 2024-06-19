@@ -1,8 +1,8 @@
 <template>
   <div v-if="session" :session="session">
-    <q-layout view="hHh lpR lFf" styles="min-height: 100vh;">
+    <q-layout view="hHh lpR fFf">
       <TheNavigation />
-      <q-page-container>
+      <q-page-container class="app-page">
         <q-page padding>
           <router-view />
         </q-page>
@@ -30,3 +30,25 @@ onMounted(() => {
   })
 })
 </script>
+<style scoped>
+.app-page {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.app-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("@/assets/images/auth_bg.jpg") no-repeat center center;
+  background-size: cover;
+  z-index: -1; /* Place the pseudo-element behind the content */
+}
+
+</style>

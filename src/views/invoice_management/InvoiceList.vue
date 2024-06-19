@@ -3,6 +3,7 @@
     <h1>INVOICE MANAGEMENT</h1>
     <div class="q-pa-md">
       <q-table
+      class="table"
         :rows="rows"
         :columns="columns"
         row-key="invoice_no"
