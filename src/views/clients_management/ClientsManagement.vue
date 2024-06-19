@@ -1,16 +1,16 @@
 <template>
   <div class="clients-management">
-    <h1>ACCOUNTS MANAGEMENT</h1>
+    <h1>CLIENTS MANAGEMENT</h1>
 
     <!-- Add Client Button -->
-    <q-btn color="primary" @click="openAddClientDialog">Add Client</q-btn>
+    <q-btn color="primary" class="q-mb-lg" @click="openAddClientDialog" label="Add client"/>
 
     <!-- Clients Table -->
     <q-table
+      class="table"
       :rows="clients"
       :columns="columns"
       row-key="id"
-      hide-pagination
     >
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
@@ -24,26 +24,25 @@
     </q-table>
 
     <!-- Add Client Dialog -->
-    <q-dialog v-model="addClientDialog" persistent>
-      <q-card>
-        <q-card-section>
-          <h2 class="text-h6">Add New Client</h2>
+    <q-dialog v-model="addClientDialog" persistent transition-show="slide-down" transition-hide="slide-up">
+      <q-card style="width: 500px;">
+        <q-card-section class="bg-primary text-white">
+          <div class="text-h6">Add New Client</div>
         </q-card-section>
         <q-card-section>
           <!-- Add Client Form -->
-          <q-form @submit="addClient">
-            <q-input v-model="newClient.account_no" label="Account No" required></q-input>
-            <q-input v-model="newClient.name" label="Name" required></q-input>
-            <q-input v-model="newClient.description" label="Description" required></q-input>
+          <q-form @submit="addClient" class="q-gutter-md">
+            <q-input v-model="newClient.account_no" label="Account No" outlined required></q-input>
+            <q-input v-model="newClient.name" label="Name" outlined required></q-input>
+            <q-input v-model="newClient.description" label="Description" outlined required></q-input>
             <q-card-actions align="right">
               <q-btn color="primary" type="submit" label="Add Client"></q-btn>
-              <q-btn color="primary" @click="closeAddClientDialog" label="Cancel"></q-btn>
+              <q-btn color="secondary" @click="closeAddClientDialog" label="Cancel"></q-btn>
             </q-card-actions>
           </q-form>
         </q-card-section>
       </q-card>
     </q-dialog>
-
   </div>
 </template>
 
@@ -116,9 +115,20 @@ const addClient = async () => {
 const viewCoupons = (accountNo) => {
   router.push({ name: 'Coupons Management', query: { account_no: accountNo } });
 };
-
 </script>
 
 <style scoped>
-/* Add your custom styles here */
+.clients-management {
+  padding: 20px;
+}
+
+.q-dialog__inner {
+  max-width: 500px; /* Ensure the dialog box width is properly set */
+}
+
+.q-card-section.bg-primary {
+  background-color: #3f51b5;
+  color: #ffffff;
+}
+
 </style>

@@ -1,7 +1,10 @@
 <template>
-  <SignUp></SignUp>
   <div class="user-management">
     <h1>USER MANAGEMENT</h1>
+    
+    <!-- Add User Button -->
+    <q-btn color="primary" class="q-mb-lg" @click="openSignUpDialog" label="Add User" />
+
     <div class="q-pa-md">
       <q-table :rows="rows" :columns="columns" row-key="id">
         <template v-slot:body-cell-actions="props">
@@ -15,23 +18,30 @@
         </template>
       </q-table>
     </div>
-    <q-dialog v-model="isDialogOpen" persistent>
-      <q-card>
-        <q-card-section class="row items-center">
-          <div>
-            <h5>New Password</h5>
-            <p>{{ newPassword }}</p>
-          </div>
+    
+    <!-- Recover Account Dialog -->
+    <q-dialog v-model="isDialogOpen" persistent transition-show="slide-down" transition-hide="slide-up">
+      <q-card style="width: 500px;">
+        <q-card-section class="row items-center bg-primary text-white">
+          <div class="text-h6">New Password</div>
+          <!-- <q-btn dense flat round icon="close" class="absolute-top-right text-white" @click="isDialogOpen = false"></q-btn> -->
+        </q-card-section>
+        <q-card-section class="q-pa-md relative-position">
           <q-btn
-            class="q-ml-sm"
-            label="Copy"
+            dense
+            flat
+            round
+            icon="content_copy"
+            class="absolute-top-right"
             @click="copyToClipboard(newPassword)"
           />
+          <div>
+            <h5 class="text-center">{{ newPassword }}</h5>
+          </div>
         </q-card-section>
         <q-card-actions align="right">
-          <q-btn flat label="Cancel" @click="isDialogOpen = false" />
+          <q-btn color="secondary" label="Cancel" @click="isDialogOpen = false" />
           <q-btn
-            flat
             label="Update Password"
             color="primary"
             @click="updatePassword"
@@ -39,12 +49,24 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    
+    <!-- Sign Up Dialog -->
+    <q-dialog v-model="isSignUpDialogOpen" persistent transition-show="slide-down" transition-hide="slide-up">
+      <q-card style="width: 500px;">
+        <q-card-section class="row items-center bg-primary text-white">
+          <div class="text-h6">Add New User</div>
+          <q-btn dense flat round icon="close" class="absolute-top-right text-white" @click="isSignUpDialogOpen = false"></q-btn>
+        </q-card-section>
+        <q-card-section>
+          <SignUp />
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
 import { QBtn, QTable, QTd, QDialog, QCard, QCardSection, QCardActions } from "quasar";
 import SignUp from "@/components/SignUp.vue";
 import { fetchAllUsers, updateAuthUserPassword } from "@/../supabase/api/user_accounts.js"; // Adjust import path as per your API structure
@@ -57,6 +79,7 @@ const columns = [
 
 const rows = ref([]);
 const isDialogOpen = ref(false);
+const isSignUpDialogOpen = ref(false);
 const newPassword = ref("");
 const selectedUser = ref(null);
 
@@ -109,9 +132,40 @@ async function updatePassword() {
   }
 }
 
+function openSignUpDialog() {
+  isSignUpDialogOpen.value = true;
+}
+
 onMounted(fetchData);
 </script>
 
 <style scoped>
-/* Add scoped styles here if needed */
+.user-management {
+  padding: 20px;
+}
+
+.q-dialog__inner {
+  max-width: 500px; /* Ensure the dialog box width is properly set */
+}
+
+.q-card-section.bg-primary {
+  background-color: #3f51b5;
+  color: #ffffff;
+}
+
+.absolute-top-right {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.absolute-top-left {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+}
+
+.relative-position {
+  position: relative;
+}
 </style>

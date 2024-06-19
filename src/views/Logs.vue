@@ -46,6 +46,13 @@ const columns = [
     field: "changed_at",
     sortable: true,
   },
+  {
+    name: "user_email",
+    align: "left",
+    label: "User Email",
+    field: "user_email",
+    sortable: true,
+  },
 ];
 
 const logs = ref([]);
