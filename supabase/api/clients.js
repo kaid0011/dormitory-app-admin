@@ -78,3 +78,30 @@ export async function updateCouponInDatabase(couponId, updatedFields) {
     console.error('Error updating coupon:', error.message);
   }
 }
+
+export const updateCouponBalances = async (accountNo, newBalance) => {
+  try {
+    // Fetch the client based on account_no
+    const { data: clients, error: clientError } = await supabase
+      .from('clients')
+      .select('id')
+      .eq('account_no', accountNo)
+      .single();
+    
+    if (clientError) throw clientError;
+
+    const clientId = clients.id;
+
+    // Update all coupons under the fetched client_id
+    const { data, error } = await supabase
+      .from('coupons')
+      .update({ balance: newBalance })
+      .eq('client_id', clientId);
+
+    if (error) throw error;
+
+    return { data };
+  } catch (error) {
+    return { error };
+  }
+};
