@@ -1,6 +1,7 @@
 <template>
-  <div class="login-page">
-    <form class="login-box" @submit.prevent="handleSignUp">
+  <!-- <div class="login-page"> -->
+    <!-- <form class="login-box" @submit.prevent="handleSignUp"> -->
+    <form class="" @submit.prevent="handleSignUp">
       <q-img class="user" src="https://i.ibb.co/yVGxFPR/2.png" width="100px" height="100px" />
       <h3>Add User</h3>
       <div>
@@ -13,26 +14,43 @@
         <q-input v-model="password" filled type="password" placeholder="Your Password" class="inputField" />
       </div>
       <div>
+        <h4>Access Areas</h4>
+        <div v-for="area in accessAreas" :key="area.id">
+          <q-checkbox v-model="selectedAreas" :val="area.id" :label="area.name" />
+        </div>
+      </div>
+      <div>
         <q-btn type="submit" :loading="loading" :label="loading ? 'Loading' : 'Sign Up'" color="primary" />
       </div>
       <q-space />
     </form>
-  </div>
+  <!-- </div> -->
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { signUpNewUser } from '@/../supabase/api/authentication.js'; // Adjust the path as needed
+import { ref, onMounted } from 'vue';
+import { signUpNewUser, fetchAccessAreas } from '@/../supabase/api/authentication.js'; // Adjust the path as needed
 
 const name = ref('');
 const email = ref('');
 const password = ref('');
 const loading = ref(false);
+const accessAreas = ref([]);
+const selectedAreas = ref([]);
+
+onMounted(async () => {
+  try {
+    const data = await fetchAccessAreas();
+    accessAreas.value = data;
+  } catch (error) {
+    console.error('Error fetching access areas:', error.message);
+  }
+});
 
 async function handleSignUp() {
   try {
     loading.value = true;
-    await signUpNewUser(name.value, email.value, password.value);
+    await signUpNewUser(name.value, email.value, password.value, selectedAreas.value);
     console.log('Sign up successful!');
     // Redirect or perform any necessary action upon successful sign-up
   } catch (error) {
@@ -114,5 +132,14 @@ h3 {
 
 .q-btn.flat:hover {
   color: #00ffff;
+}
+
+h4 {
+  margin-top: 20px;
+  color: #59238F;
+}
+
+.q-checkbox {
+  margin-bottom: 10px;
 }
 </style>

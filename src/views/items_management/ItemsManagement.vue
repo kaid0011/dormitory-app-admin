@@ -8,7 +8,7 @@
     <!-- Items Table -->
     <q-table :rows="items" :columns="columns" row-key="id">
       <template v-slot:body-cell-actions="props">
-        <q-td :props="props">
+        <q-td :props="props" class="q-gutter-x-md">
           <q-btn
             label="Update"
             color="primary"

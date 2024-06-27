@@ -21,7 +21,7 @@
           />
           <q-btn
             label="Top Up"
-            color="primary"
+            color="secondary"
             @click="openTopUpDialog(props.row)"
           />
         </q-td>

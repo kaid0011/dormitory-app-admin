@@ -1,4 +1,5 @@
 <template>
+  <div class="login-page">
     <form class="login-box" @submit.prevent="handleSignIn">
       <q-img class="user" src="@/assets/images/logo.png" width="100px" height="100px" />
       <h3>Sign In</h3>
@@ -14,21 +15,25 @@
       <q-space />
       <!-- <q-btn flat label="Forget Password" /> -->
     </form>
+  </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { signInWithEmail } from '@/../supabase/api/authentication.js'; // Adjust the path as needed
 
 const email = ref('');
 const password = ref('');
 const loading = ref(false);
+const router = useRouter();
 
 async function handleSignIn() {
   try {
     loading.value = true;
     await signInWithEmail(email.value, password.value);
-    // Redirect or perform any necessary action upon successful sign-in
+    // Redirect to dashboard upon successful sign-in
+    router.replace('/');
   } catch (error) {
     console.error('Sign in error:', error.message);
     // Handle sign-in error
@@ -109,5 +114,4 @@ h3 {
 .q-btn.flat:hover {
   color: #00ffff;
 }
-
 </style>
