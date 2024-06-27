@@ -18,8 +18,32 @@ myApp.use(Quasar, {
   plugins: {
     Dialog,
     Notify,
-  }, // import Quasar plugins and add here
+  },
 });
+
+// Fetch session from local storage
+const session = JSON.parse(localStorage.getItem('session'));
+
+if (session) {
+  myApp.provide('session', session);
+}
+
+// Navigation guard to check access and session status
+router.beforeEach((to, from, next) => {
+  const accessAreas = JSON.parse(localStorage.getItem('accessAreas') || '[]');
+  const requiredAccess = to.meta.accessArea;
+
+  if (session && to.name === 'Authentication') {
+    // Redirect to the first route (e.g., dashboard) if trying to access authentication page with an active session
+    next({ name: 'Dashboard' });
+  } else if (requiredAccess && !accessAreas.includes(requiredAccess)) {
+    // Redirect to a not authorized page if access is not allowed and not already on the NotAuthorized page
+    next({ name: 'NotAuthorized' });
+  } else {
+    next();
+  }
+});
+
 myApp.use(router);
 
 myApp.mount("#app");

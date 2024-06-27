@@ -109,3 +109,19 @@ export async function fetchTransactionsByInvoiceNo(invoiceNo) {
     throw error;
   }
 }
+
+export async function updateStatus(invoice) {
+  try {
+    const { data, error } = await supabase
+      .from('invoices')
+      .update({ status: invoice.status })
+      .eq('invoice_no', invoice.invoice_no);
+
+    if (error) throw error;
+
+    return data;
+  } catch (error) {
+    console.error('Error updating invoice status:', error);
+    throw error;
+  }
+}
