@@ -3,6 +3,6 @@
   publish = "dist"
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+  from = "https://dormitory-app-admin.netlify.app"
+  to = "https://dormitory-admin.cc-systems.net"
+  status = 301
