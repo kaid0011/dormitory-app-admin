@@ -2,7 +2,12 @@ import { supabase } from '../config.js';
 
 export async function fetchAllInvoices() {
   try {
-    const { data, error } = await supabase.from('invoices').select('*');
+    const { data, error } = await supabase
+      .from('invoices')
+      .select('*')
+      .order('date_time', { ascending: false })  // Adjust the column name based on your schema
+      .limit(1000);
+    
     if (error) {
       throw error;
     }
@@ -11,6 +16,7 @@ export async function fetchAllInvoices() {
     console.error('Error fetching invoices:', error.message);
   }
 }
+
 
 export async function fetchCouponById(couponId) {
   try {
